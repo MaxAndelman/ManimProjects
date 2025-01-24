@@ -1,0 +1,115 @@
+%%manim -qh myscene
+
+from manim import *
+
+class myscene(Scene):
+    def construct(self) :
+        P = Circle(radius=3, color=BLUE, fill_opacity=0.5)
+        P_label = Text("ℙ")
+        P_label.to_edge(UP)
+        P_label.shift(RIGHT)
+
+        beta_vec = Vector([-3,3])
+        beta_label = beta_vec.coordinate_label()
+        beta_label = Text("β")
+        beta_label.to_edge(UP)
+        beta_label.shift(LEFT)
+        beta_label.shift(DOWN)
+        ibeta_vec = Vector([-3,-3])
+        ibeta_label = Text("iβ")
+        ibeta_label.shift(LEFT)
+        ibeta_label.shift(DOWN)
+        ibeta_label.shift(DOWN)
+
+        dom = Polygon([-6, 0, 0], [-3, 3, 0], [0,0,0], [-3, -3, 0], color=RED, fill_opacity=0.5)
+        dom_label = Text("Dom(β)")
+        dom_label.to_edge(LEFT)
+
+        point_below1 = Dot([1,-2,0], color=BLACK)
+        beta_copy1 = Vector([-3,3])
+        beta_copy1.shift([1,-2,0])
+        point_below1_label = Text("β")
+        point_below1_label.shift([0,-2,0])
+        point_below2 = Dot([0,-2,0], color=BLACK)
+        beta_copy2 = Vector([-3,3])
+        beta_copy2.shift([0,-2,0])
+        point_below2_label = Text("β")
+        point_below2_label.shift([-1,0,0])
+        recbelow = Polygon([0, -6, 0], [3, -3, 0], [0,0,0], [-3, -3, 0])
+        recbelow1 = Polygon([0, -6, 0], [3, -3, 0], [0,0,0], [-3, -3, 0])
+
+        point_above1 = Dot([1,2,0], color=BLACK)
+        ibeta_copy1 = Vector([-3,-3])
+        ibeta_copy1.shift([1,2,0])
+        point_above1_label = Text("iβ")
+        point_above1_label.shift([0,2,0])
+        point_above2 = Dot([0,2,0], color=BLACK)
+        ibeta_copy2 = Vector([-3,-3])
+        ibeta_copy2.shift([0,2,0])
+        point_above2_label = Text("iβ")
+        point_above2_label.shift([-1,1.5,0])
+        recabove = Polygon([0, 6, 0], [-3, 3, 0], [0,0,0], [3, 3, 0])
+        recabove1 = Polygon([0, 6, 0], [-3, 3, 0], [0,0,0], [3, 3, 0])
+
+        point_right1 = Dot([2,1,0], color=BLACK)
+        ibpb_copy1 = Vector([-6,0])
+        ibpb_copy1.shift([2,1,0])
+        point_right1_label = Text("β + iβ")
+        point_right1_label.shift([1,0,0])
+        point_right2 = Dot([2,-1,0], color=BLACK)
+        ibpb_copy2 = Vector([-6, 0])
+        ibpb_copy2.shift([2,-1,0])
+        point_right2_label = Text("β + iβ")
+        point_right2_label.shift([-1,0,0])
+        recright = Polygon([6, 0, 0], [3, -3, 0], [0,0,0], [3, 3, 0])
+
+        finalbeta = Text("β")
+        finalbeta.shift([0,-2,0])
+        finalibeta = Text("iβ")
+        finalibeta.shift([0,2,0])
+        finalibpb = Text("β + iβ")
+        finalibpb.shift([2,0,0])
+        
+        self.add(ThreeDAxes(axis_config={"include_ticks": False}))
+        self.play(Write(P), Write(P_label))
+        self.play(Write(beta_vec), Write(ibeta_vec))
+        self.play(Write(beta_label), Write(ibeta_label))
+        self.play(Write(dom))
+        self.play(Write(dom_label))
+        self.play(Unwrite(beta_label), Unwrite(ibeta_label))
+        
+        self.add(point_below2)
+        self.play(Write(beta_copy2), Write(point_below2_label))
+        self.wait()
+        self.remove(point_below2)
+        self.add(point_below1)
+        self.play(Transform(beta_copy2, beta_copy1), Transform(point_below2_label, point_below1_label))
+        self.play(Write(recbelow))
+        self.play(Unwrite(recbelow), Unwrite(point_below1))
+        
+        self.add(Polygon([100, 100, 0],[-100, 100, 0],[-100, -100, 0],[100, -100, 0], color = BLACK, fill_opacity=1),
+                         ThreeDAxes(axis_config={"include_ticks": False}), P, beta_vec, ibeta_vec, dom, dom_label, point_above2)
+        self.play(Transform(beta_copy1, ibeta_copy2), Transform(point_below1_label, point_above2_label))
+        self.wait()
+        self.remove(point_above2, ibeta_copy2, point_above2_label)
+        self.remove(ibeta_copy2, point_above2_label)
+        self.add(Polygon([100, 100, 0],[-100, 100, 0],[-100, -100, 0],[100, -100, 0], color = BLACK, fill_opacity=1),
+                    ThreeDAxes(axis_config={"include_ticks": False}), P, beta_vec, ibeta_vec, dom, dom_label, point_above1)
+        self.play(Transform(ibeta_copy2, ibeta_copy1), Transform(point_above2_label, point_above1_label))
+        self.play(Write(recabove))
+        self.play(Unwrite(recabove))
+
+        self.add(Polygon([100, 100, 0],[-100, 100, 0],[-100, -100, 0],[100, -100, 0], color = BLACK, fill_opacity=1),
+                         ThreeDAxes(axis_config={"include_ticks": False}), P, beta_vec, ibeta_vec, dom, dom_label, point_right2)
+        self.play(Transform(ibeta_copy1, ibpb_copy2), Transform(point_above1_label, point_right2_label))
+        self.wait()
+        self.add(Polygon([100, 100, 0],[-100, 100, 0],[-100, -100, 0],[100, -100, 0], color = BLACK, fill_opacity=1),
+                    ThreeDAxes(axis_config={"include_ticks": False}), P, beta_vec, ibeta_vec, dom, dom_label, point_right1)
+        self.play(Transform(ibpb_copy2, ibpb_copy1), Transform(point_right2_label, point_right1_label))
+        self.play(Write(recright))
+        self.add(Polygon([100, 100, 0],[-100, 100, 0],[-100, -100, 0],[100, -100, 0], color = BLACK, fill_opacity=1),
+                    ThreeDAxes(axis_config={"include_ticks": False}), P, beta_vec, ibeta_vec, dom, dom_label, recright)
+        
+        self.play(Write(recabove1), Write(recbelow1))
+        self.play(Write(finalbeta), Write(finalibeta), Write(finalibpb))
+        self.wait()
